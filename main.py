@@ -8,6 +8,10 @@ import os
 import time
 import pandas as pd
 from datetime import datetime
+import seaborn as sns
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('Agg')
 
 
 def get_price(flavor):
@@ -40,6 +44,11 @@ def send_email(to='frankxu0124@gmail.com', subject='test', body='test'):
         smtp.login(email_sender, email_password)
         smtp.sendmail(email_sender, email_receiver, em.as_string())
 
+def create_figure(data):
+    plt.figure(figsize=(12, 6))
+    sns_plot = sns.lineplot(x='timestamp', y='value', hue='variable', data=pd.melt(data, ['timestamp']))
+    sns_plot.tick_params(axis='x', labelrotation=30)
+    sns_plot.figure.savefig(os.path.join(os.getcwd(), "static/output.pdf"), bbox_inches="tight")
 
 data_path = os.path.join(os.getcwd(), 'data.csv')
 if os.path.exists(data_path):
@@ -60,5 +69,6 @@ if __name__ == "__main__":
             body += f"Mocha URL: https://us.myprotein.com/sports-nutrition/impact-whey-isolate/11352688.html?switchcurrency=USD&shippingcountry=US"
             send_email(subject='Price Alert!', body=body)
         data.loc[len(data)] = [current_datetime, unflavor, mocha]
+        create_figure(data)
         data.to_csv('data.csv', index=False)
-        time.sleep(3600)
+        time.sleep(60)
