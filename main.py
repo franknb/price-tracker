@@ -71,4 +71,4 @@ if __name__ == "__main__":
         data.loc[len(data)] = [current_datetime, unflavor, mocha]
         create_figure(data)
         data.to_csv('data.csv', index=False)
-        time.sleep(60)
+        time.sleep(3600)
