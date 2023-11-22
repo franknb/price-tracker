@@ -1,0 +1,9 @@
+requests
+bs4
+email
+ssl
+smtplib
+pandas
+flask
+seaborn
+matplotlib
